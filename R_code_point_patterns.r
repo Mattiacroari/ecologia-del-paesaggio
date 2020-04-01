@@ -43,8 +43,37 @@ d <- density(covids)
 plot(d)
 points(covids)
 
+# save the .RData
 
 
+setwd("C:/lab")  # recuperiamo i dati all'interno della cartella Lab
+load("point_pattern.RData")
+ls()    # per vedere cosa c'è dentro il file
+library(spatstat)
 
+plot(d)
+
+# cambiare colori nella mappa --> palette
+cl <- colorRampPalette(c('yellow','orange','red')) (100)  # cl è il nome. (100) indica il numero di gradazioni di colore, che vanno dal yellow al red
+plot(d, col=cl)  # creare grafico di "d" con i colori di "cl"
+
+# Exercise: plot della mappa della densita dal verde al blu
+cl1 <- colorRampPalette(c('yellow','green','blue')) (100)
+points(covids)  # inserire punti sulla mappa
+
+# 
+coastlines <- readOGR("ne_10m_coastline.shp") # se da errore può mancare la libreria, non devono essere dentro ad un'altra cartella
+install.packages("rgdal")   # installare il pacchetto
+library(rgdal)
+    # a questo punto posso rimandare il comando
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
+
+# Exercise: plot della mappa di densità con una nuova colorazione, e aggiunta delle coastlines
+cl <- colorRampPalette(c('lightblue','blue','black')) (100)
+plot(d, col=cl)
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)
 
 
