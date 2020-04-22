@@ -38,3 +38,39 @@ plot(p224r63_2011c$map)
 # in funzione del numero di classi aumenta l'incertezza
 # possiamo fare piu mappe con piu o meno classi per vedere le difernze tra i cluster dei pixel 
 # con due classi incertezza bassa
+
+      
+# exercise: caricare il workspace point_pattern.Rdata (load("...")) e creare un grafico
+ # andare in Session/Set Working Directory/Choose Directory
+      library(spatstat)
+library(rgdal)   # per le coastline
+setwd("...")
+load("point_pattern.RData")
+ls()
+cl5 <- colorRampPalette(c('cyan', 'purple', 'red')) (200) 
+plot(d, col=cl5, main="density")
+points(covids)
+coastlines <- readOGR("ne_10m_coastline.shp")
+plot(coastlines, add=T)   
+      
+      
+ # interpolazione di valori
+      
+  #per vedere la tabella
+ head(covid)
+ view(covid) # vedi intera lista di paesi con numero di casi
+      
+ marks(covids) <- covid$cases
+ s <- Smooth(covids)
+      
+      
+      
+      
+
+      
+      
+      
+      
+      
+      
+   
