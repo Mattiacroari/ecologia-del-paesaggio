@@ -1,6 +1,6 @@
 # Argomento = land cover 
 
-setwd(C....
+setwd("C:/lab")
 
 install.packages("RStoolbox")
 library(RStoolbox)
@@ -136,13 +136,59 @@ dT <- density(Tesippp)
 plot(dT)
 
 points(Tesippp,col="green")      
-      
-      
 
-      
-      
-      
-      
-      
-      
-   
+
+#####
+
+# prima cosa settare setwd() su R
+# verificare che ci sia .RData salvata l'altra volta
+setwd("C:/lab")
+load("sanmarino.RData")
+ls()    # per vedere l'interno del file sanmarino.RData
+       # dt è associato alla densità
+       # Tesi 
+       # Tesippp indica il point pattern, incida latitudine e longitudine e da qui si ottiene una density
+# dT= density map, Tesi=dataset originale, Tesi_ppp=point pattern
+library(spatstat)
+# carico mappa di densità dei dati, quanto sono densi i punti di campionamento? direttamente legata ai prati aridi.
+plot(dT)
+points(Tesippp, col="green")
+
+# interpolazione
+# con head si visualizzano solo alcuni valori, prime 6 righe in questo caso
+head(Tesi)   # Species_richness sono i dati che ci servono
+marks(Tesippp) <- Tesi$Species_richness # mark è un valore che viene incollato, prendiamo i singli punti di campionamento e li associamo al primo punto di pointpatter e cosi via
+    # associato al point pattern il valore che ci interessava, cioè la richezza di specie
+# si crea una mappa continua formata da pixel con valori diversi tra loro
+# stima di valore che non sono stati interpolati
+interpol <- Smooth(Tesippp)    # Smooth dei valori individuati legati con marks
+plot(interpol)
+points(Tesippp, col="green")   # i valori piu bassi sono a nord e sud-ovest. valori alti sono a ovest e sud-est
+
+
+# caricare librerira rgdal
+library(rgdal)
+sanmarino <- readOGR("San_Marino.shp")
+plot(sanmarino)   # file vettoriale fatto con punti,linee e coordinate. questo è un poligono
+plot(interpol, add=T)   # add=T aggiunge pezzi alla mappa precedente, altrimenti cancella la mappa appena caricata. tutto sovrapposto
+points(Tesippp, col="green")  # aggiungere i punti
+# per mettere la mappa di san marino sopra gli altri dati
+plot(sanmarino, add=T)
+
+# Exercise: plot multiframe di DENSITà e interpolazione. le immagini sono una sopra l'altra
+par(mfrow=c(2,1))    # 2 righe e 1 colonna. c indica un gruppo di oggetti contenuto tra le ()
+
+plot(dT, main="Density of points")
+points(Tesippp,col="green")
+plot(interpol, main="Estimate of species richness")
+points(Tesippp,col="green")
+
+   # mettere le immagini una affianco all'altra, modificare il mfrow
+par(mfrow=c(1,2))
+plot(dT, main="Density of points")
+points(Tesippp,col="green")
+plot(interpol, main="Estimate of species richness")
+points(Tesippp,col="green")
+
+
+
