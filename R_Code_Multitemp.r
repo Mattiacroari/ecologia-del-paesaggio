@@ -140,8 +140,7 @@ grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) +
 geom_bar(stat="identity", fill="white")
 grid.arrange(grafico1, grafico2, nrow = 1)  # al posto di "plot1" e "plot2" inserire i nomi dei grafici precedentemente creati
 
-
-
+dev.off()  # chiudere il lavoro
 
 
 
