@@ -66,6 +66,7 @@ plot(EN10, col=cl)
 plot(EN11, col=cl)
 plot(EN12, col=cl)
 plot(EN13, col=cl)
-
+# provare con:
+plot ( EN01, EN02, EN03, EN04, EN05, col=cl)  # plotta il singolo raster e così non si può fare. Bisogna fare un dataset con all'interno tutte le immagini
 
 
