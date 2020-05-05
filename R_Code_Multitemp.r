@@ -1,6 +1,6 @@
 # Ananisi multitemporali con terreno suddiviso in varie classi di copertura del suolo 
 
-setwd.....
+setwd("C:/lab")
 
 library(raster)
 
@@ -93,3 +93,57 @@ output <- data.frame(cover,before,after)
 # richimao "ggplot2"
 
 library(gglpot2)
+
+
+#### day 2
+
+setwd("C:/lab/")
+load("defor.RData")
+ls()    # vedere cosa c'è nel file
+
+install.packages("ggplot2")
+library(ggplot2)
+library(raster)
+
+par(mfrow=c(1,2))
+cl <- colorRampPalette(c('black','green'))(100) # 
+plot(d1c$map, col=cl)
+plot(d2c$map, col=cl)
+
+output # visualizzare la tabella costruita precedentemente. Si vede come l'agricoltura è passato da 11% a 48%. mentre la foresta è passata da 89 a 52%
+
+# andiamo a fare degli istogrammi su dataset output, cioe le percentuali di copertura agricola e forestale
+# in X c'è agricoltura (agr) o foresta (for)
+# in Y le percentuali delle varie classi
+# il colore si basa sulla copertura
+
+# istogrammi della copertura prima della deforestazione
+ggplot(output, aes(x=cover, y=before, color=cover)) +
+geom_bar(stat="identity", fill="white")
+# avremo una bassa % di agricoltura e una alta % di foresta
+
+# exercise: plotta l'istogramma della superficie dopo la deforestazione
+# after si trova nella tabella lanciata con output
+ggplot(output, aes(x=cover, y=after, color=cover)) +
+geom_bar(stat="identity", fill="white")
+# plot degli istogrammi vicini, cosi visibili assieme
+# fare altro pacchetto perche par, con ggplot, non funziona
+install.packages("gridExtra")
+library(gridExtra)  # oppure: require(Extra)
+
+# grid.arrange(plot1, plot2, nrow = 1)
+# prende vari plot(es 1 e 2) e li mette nella stessa immagine (stessa funzione di )
+grafico1 <- ggplot(output, aes(x=cover, y=before, color=cover)) +
+geom_bar(stat="identity", fill="white")
+
+grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) +
+geom_bar(stat="identity", fill="white")
+grid.arrange(grafico1, grafico2, nrow = 1)  # al posto di "plot1" e "plot2" inserire i nomi dei grafici precedentemente creati
+
+
+
+
+
+
+
+
