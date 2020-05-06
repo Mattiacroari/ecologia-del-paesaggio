@@ -75,3 +75,5 @@ plot ( EN01, EN02, EN03, EN04, EN05, col=cl)  # plotta il singolo raster e così
 
 
 
+
+
