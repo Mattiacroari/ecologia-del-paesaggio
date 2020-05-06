@@ -87,11 +87,20 @@ rlist <- list.files(pattern="")
 rlist # vedo cosa c'è dentro, tutti EN_00....ecc
 
 # uso la funzione lapply()  : per caricare i dati tutti assieme
-# 
+# applichiamo alla lista "rlist" la funzione "raster". Il tutto è associato ad un nome, "listafinale"
+listafinale <- lapply(rlist, raster) # tutti i file sono inseriti in una unica lista
 
+# ora si può fare un plot con tutti i par dell'altro giorno
+# tutti i file (bande) li compattiamo in una singola immagine attravero il comando "stack()"
+EN <- stack(listafinale) # EN è il nome
 
-
-
+# adesso è possibile fare il plot finale con tutte le immagini all'interno
+# con centinaia di immagini, invece di plottare ogni singolo dato, si inseriscono tutti in una cartella.
+# importare la lista con comando lapply()
+# compattare con codice "stack()"
+# inviare il plot
+cl <- colorRampPalette(c('red','orange','yellow'))(100)
+plot(EN, col=cl)
 
 
 
