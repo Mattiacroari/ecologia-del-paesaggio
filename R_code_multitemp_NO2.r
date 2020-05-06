@@ -70,6 +70,28 @@ plot(EN13, col=cl)
 # provare con:
 plot ( EN01, EN02, EN03, EN04, EN05, col=cl)  # plotta il singolo raster e così non si può fare. Bisogna fare un dataset con all'interno tutte le immagini
 
+# day 2
+setwd("C:/lab/")
+
+# caricare dato precedente
+load("EN.RData")
+ls()
+
+# appricare un ciclo (intera lista di dati): list.files()
+# creare una cartella, all'interno della cartella Lab
+
+setwd("C:/lab/esa_no2")
+
+# creo rlist contenente tutti i file della cartella esa_no2
+rlist <- list.files(pattern="")
+rlist # vedo cosa c'è dentro, tutti EN_00....ecc
+
+# uso la funzione lapply()  : per caricare i dati tutti assieme
+# 
+
+
+
+
 
 
 
