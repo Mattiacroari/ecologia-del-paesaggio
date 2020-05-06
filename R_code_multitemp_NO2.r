@@ -95,10 +95,11 @@ listafinale <- lapply(rlist, raster) # tutti i file sono inseriti in una unica l
 EN <- stack(listafinale) # EN è il nome
 
 # adesso è possibile fare il plot finale con tutte le immagini all'interno
-# con centinaia di immagini, invece di plottare ogni singolo dato, si inseriscono tutti in una cartella.
-# importare la lista con comando lapply()
-# compattare con codice "stack()"
-# inviare il plot
+# con centinaia di immagini, invece di plottare ogni singolo dato, si può fare in 4 passaggi:
+# 1. si inseriscono tutti in una cartella.
+# 2. importare la lista con comando lapply()
+# 3. compattare con codice "stack()"
+# 4. inviare il plot
 cl <- colorRampPalette(c('red','orange','yellow'))(100)
 plot(EN, col=cl)
 
