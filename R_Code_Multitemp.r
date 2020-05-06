@@ -143,6 +143,40 @@ grid.arrange(grafico1, grafico2, nrow = 1)  # al posto di "plot1" e "plot2" inse
 dev.off()  # chiudere il lavoro
 
 
+# data 06/05/202
+# recupero dati di ieri
+library(ggplot2)
+library(gridExtra)
+cover <- c("Agriculture","Forest")
+before <- c(10.9,89.1)
+after <- c(48.2,51.8)
+output <- data.frame(cover,before,after)
+output
+
+grafico1 <- ggplot(output, aes(x=cover, y=before, color=cover)) +
++     geom_bar(stat="identity", fill="white")
+grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) +
++     geom_bar(stat="identity", fill="white")
+grid.arrange(grafico1, grafico2, nrow = 1)
+
+# mettere grafico da 0 a 100 sull'asse y: ylim(0, 100)
+grafico1 <- ggplot(output, aes(x=cover, y=before, color=cover)) + 
++     geom_bar(stat="identity", fill="white") +
++     ylim(0, 100)
+grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) + 
++     geom_bar(stat="identity", fill="white") +
++     ylim(0, 100)
+
+grid.arrange(grafico1, grafico2, nrow = 1) # plotto i due nuovi grafici
+
+
+
+
+
+
+
+
+
 
 
 
