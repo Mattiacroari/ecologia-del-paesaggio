@@ -2,6 +2,7 @@
 
 setwd("C:/lab")
 # vado ad importare le immagini, funzione raster
+library(raster)
 EN01 <- raster("EN_0001.png")
 plot(EN01)   # visualizziamo immagine
 
@@ -68,5 +69,9 @@ plot(EN12, col=cl)
 plot(EN13, col=cl)
 # provare con:
 plot ( EN01, EN02, EN03, EN04, EN05, col=cl)  # plotta il singolo raster e così non si può fare. Bisogna fare un dataset con all'interno tutte le immagini
+
+
+
+
 
 
