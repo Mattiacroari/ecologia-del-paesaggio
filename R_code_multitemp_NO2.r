@@ -103,6 +103,45 @@ EN <- stack(listafinale) # EN è il nome
 cl <- colorRampPalette(c('red','orange','yellow'))(100)
 plot(EN, col=cl)
 
+# Day 3
+library(raster)
+setwd("C:/lab/")
+setwd("C:/lab/esa_no2") # richiamo la cartella
+# nella cartella ci sono file .png
+# usiamo "list.file()" per unire tutti i file in una lista e la associamo ad un nome
+rlist <- list.files(pattern=".png")
+
+# uso la funzione lapply()  : per caricare i dati tutti assieme
+# applichiamo alla lista "rlist" la funzione "raster".
+listafinale <- lapply(rlist, raster)
+# ora creo un pacchetto con la lista di file.
+# il pacchetto lo chiamo EN
+EN <- stack(listafinale)
+EN # mostra cosa c'è dentro. Dimensione, Nomi, Classe ecc
+# abbiamo preso i singoli file (13 in totale)
+# registrato per ogni pixel la quantità di NO2
+# lo stack di file si chiama EN
+# scorporiamo l'ultimo e il primo per vedere la differenza di NO2 tra fine e inizio
+# trovo il valore del pixel del prima immagine il valore dello stesso pixel della ultima immagine
+difEN <- EN$EN_0013 - EN$EN_0001
+# facciamo una colorRampPalette
+# plottiamo per avere l'immagine
+cld <- colorRampPalette(c('blue','white','red'))(100)
+plot(difEN, col=cld)
+# zone in cui NO2 è calato drasticamente, indicate in ROSSO
+# zone con poche differenze sono BLU
+# BIANCO se non ci sono differenze
+
+# plot dell'intero set
+# cambiamo la Palette
+cl <- colorRampPalette(c('red','orange','yellow'))(100)
+plot(EN, col=cl)
+# simile al comando par. ma è più semplice creare uno stack di dati e plottarli come sopra.
+
+
+
+
+
 
 
 
