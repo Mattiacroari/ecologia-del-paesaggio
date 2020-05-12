@@ -139,6 +139,17 @@ plot(EN, col=cl)
 # simile al comando par. ma è più semplice creare uno stack di dati e plottarli come sopra.
 
 
+# misuriamo come è variato il NO2 nel tempo
+# utilizzo di un BOXPLOT
+boxplot(EN)   # è posizionato verticalmente
+boxplot(EN, horizontal=T) # messo orizzontalmente
+
+# per rimuovere gli outline
+boxplot(EN, horizontal=T,outline=F)
+# abbiamo in valori di azoto da 0-250
+boxplot(EN, horizontal=T,outline=F,axes=T) # probabile non campi perche comando gia inserito
+
+
 
 
 
