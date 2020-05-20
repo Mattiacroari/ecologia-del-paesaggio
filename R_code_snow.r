@@ -64,4 +64,14 @@ plot(difsnow, col=cldiff)
 
 
 
+# scaricare prediction.r e metterlo nella cartella snow
+source("prediction.r")
+
+# scarico immagine da IOL
+# 
+predicted.snow.2025.norm <- raster("predicted.snow.2025.norm.tif")
+# funzione lineare si vede una previsione ragionevole
+# "scenari" molto probabile della copertura nevosa
+plot(predicted.snow.2025.norm, col=cl)
+
 
