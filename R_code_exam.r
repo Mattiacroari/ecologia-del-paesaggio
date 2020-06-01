@@ -930,6 +930,8 @@ grid.arrange(grafico1, grafico2, nrow = 1) # plotto i due nuovi grafici
 ##################################### 8.
 #####################################
 #####################################
+# 8. R code multitempNO2
+
 # R code per l'analisi dei dati NO2 dal ESA - da gennaio a marzo 2020
 
 setwd("C:/lab")
@@ -1085,6 +1087,7 @@ boxplot(EN, horizontal=T,outline=F,axes=T) # M.C. probabile non campi perche com
 ##################################### 9.
 #####################################
 #####################################
+# 9. R code snow
 # M.C. prima cosa fare setwd
 setwd("C:/lab/")
 install.packages("ncdf4") # M.C. per caricare immagini da Copernicus
@@ -1164,6 +1167,7 @@ plot(predicted.snow.2025.norm, col=cl)
 ##################################### 10.
 #####################################
 #####################################
+# R code patches
 setwd("C:/lab/")
 
 library(raster)
