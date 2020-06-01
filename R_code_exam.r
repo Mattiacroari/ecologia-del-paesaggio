@@ -16,7 +16,106 @@
 ##################################### 1.
 #####################################
 #####################################
-# copiare e incollare i vari script
+# INIZIO 
+
+install.packages("sp")
+
+# richiamo il pacchetto 
+
+library(sp)
+
+data(meuse)
+
+# M.C. se digito solo meuse avro tutta la tabella
+
+meuse 
+# M.C. visualizzo data set solo nelle prime righe
+head(meuse)
+# names = nome delle variabili
+names(meuse)
+
+# M.C. summery= si puo fare un abstact delle info del dataset e delle funzioni che contiene
+summary(meuse)
+
+# M.C. pairs= funzione che crea grafico mostruoso= correlazione tra le varie variabili(tutte insieme)
+pairs(meuse)
+
+# M.C. c'è il modo di ridurre il numero di variabili nella funzione pairs
+# M.C. ~ = TILDE, è un simbolo che significa UGUALE
+
+pairs(~ cadmium + copper + lead , data = meuse) 
+
+# EXERCISE 
+
+# M.C. [,3:6]= vuol fare un subset ([]), la "," vuol dire parti da, e 3:6 vuol dire dalla colonna 3 alla 6
+# M.C. pairs(meuse[,3:6]) = pairs(~cadmium+copper+lead+zinc,data = meuse)
+# M.C. " " si usano per argomento di testo
+
+pairs(meuse[,3:6],
+      col = "red",                                         # M.C. Cambio colore dei punti
+      pch = 19,                                            # M.C. Cambio la forma dei punti, pch=point character
+      labels = c("var1", "var2", "var3"),                  # M.C. Change labels of diagonal
+      main = "This is a nice pairs plot in R")             # M.C. Add a main title
+      
+      
+# AGGIUNGO ELEVATION (che è la 7ima variabile)
+pairs(meuse[,3:7],
+# il resto poi tutto uguale
+
+
+# FUNZIONI PANNEL
+
+# M.C. <- = dai nomi alle punzioni, ho chiamato con un certo nome un blocco di codici
+# M.C. faccio indice di correlazione tra x e y (tra due variabili)
+
+# PRIMA FUNZIONE
+panel.correlations <- function(x, y, digits=1, prefix="", cex.cor)
+
+     usr <- par("usr"); on.exit(par(usr))
+     par(usr = c(0, 1, 0, 1))
+     
+ 
+# M.C. SECONDA FUNZIONE -> panel.smoothing = È un plot di punti con "lowes" = smoother locale per mostrare una linea di correlazione tra variabili
+
+panel.smoothing <- function (x, y, col = par("col"), bg = NA, pch = par("pch"),
+   cex = 1, col.smooth = "red", span = 2/3, iter = 3, ...)
+   points(x, y, pch = pch, col = col, bg = bg, cex = cex)
+
+
+# M.C. TERZA FUNZIONE -> panel.histograms = ISTOGRAMMI,fa un istogramma delle distrubuzioni di frequenza
+
+panel.histograms <- function(x, ...)
+usr <- par("usr"); on.exit(par(usr))
+
+
+# M.C. Decido cosa mettere nei vari spazi del grafico (upper pannel,lower,diagonale(cioe centrale))
+
+pairs(meuse[,3:6], lower.panel = panel.correlations, upper.panel = panel.smoothing, diag.panel = panel.histograms)
+
+
+EXERCISE: mettere come lower panel lo smoothing, come diagonal apnel gli istogrammi e come upper panel le correlazioni 
+
+pairs(meuse[,3:6], lower.panel = panel.smoothing, upper.panel = panel.correlations, diag.panel = panel.histograms)
+
+
+# FUNZIONE PLOT
+
+# M.C. come sono relazionati tra loro cadmio e rame?
+# M.C. $ = in R collega un pezzo con un altro, nostro caso collega la colonna col proprio data set
+
+plot(meuse$cadmium,meuse$copper)
+
+# M.C. oppure allego il dataframe con attach= spiega a R che utilizzeremo sempre quel dataset per le alre funzuoni (cosi non uso $)
+
+attach(meuse)
+
+plot(cadmium,copper) 
+
+plot(cadmium, copper, pch=17, col="green", main="primo plot")
+
+plot(cadmium, copper, pch=17, col="green", main="primo plot", xlab="cadmio", ylab="rame") 
+
+plot(cadmium, copper, pch=17, col="green", main="primo plot", xlab="cadmio", ylab="rame", cex.lab=2, cex=2)
 
 
 ##################################### 2.
@@ -29,16 +128,16 @@ install.packages("sp")
 # richiamo il pacchetto sp 
 library(sp)
 
-# richiamo i dati "meuse"
+# M.C. richiamo i dati "meuse"
 data(meuse)
 
 head(meuse)
 
-# plot cadium e lead, devo allegare database
+# M.C. plot cadium e lead, devo allegare database
 
 attach(meuse)
 
-# plotto e coloro e uso diverso carattere(pch=point character) e aumento dimensione(cex=character exageration)
+# M.C. plotto e coloro e uso diverso carattere(pch=point character) e aumento dimensione(cex=character exageration)
 
 plot(cadmium,lead,col="red",pch=19,cex=2)
 
@@ -46,21 +145,21 @@ plot(cadmium,lead,col="red",pch=19,cex=2)
 
 plot(copper,zinc,col="green",pch=17,cex=2)
 
-# " " le uso quando ho un testo
+# M.C. " " le uso quando ho un testo
 
-# cambiare le etichette nel grafico (x e y label)
+# M.C. cambiare le etichette nel grafico (x e y label)
 
 plot(copper,zinc,col="green",pch=17,cex=2,xlab="rame",ylab="zinco")
 
-# multiframe (per mettere piu di un grafico nella stessa finestra), par è la funzione (poi decido se i grafici li volgio in riga o in colonna)
-# c(1,2) = una riga e due colonne , nele due colonne ho messo i due grafici sullo stesso piano, la stessa riga
-# sotto copio e incollo i due grafici da unire , (puo essere utile per es.analisi multitemporale (t0 e t1))
+# M.C. multiframe (per mettere piu di un grafico nella stessa finestra), par è la funzione (poi decido se i grafici li volgio in riga o in colonna)
+# M.C. c(1,2) = una riga e due colonne , nele due colonne ho messo i due grafici sullo stesso piano, la stessa riga
+# M.C. sotto copio e incollo i due grafici da unire , (puo essere utile per es.analisi multitemporale (t0 e t1))
 
 par(mfrow=c(1,2))
 plot(copper,zinc,col="green",pch=17,cex=2)
 plot(cadmium,lead,col="red",pch=19,cex=2)
 
-# adesso due righe e una colonna
+# M.C. adesso due righe e una colonna
 
 par(mfrow=c(2,1))
 plot(copper,zinc,col="green",pch=17,cex=2)
@@ -69,28 +168,28 @@ plot(cadmium,lead,col="red",pch=19,cex=2)
 # multiframe automatico
 install.packages("GGalli")
 
-# prendo il dataset Meuse e lo mando nella funzione scaricata "ggpairs"
-# [,3:6] = dalla terza colonna alla sesta colonna per avere tutti gli elementi (li vedo da head(meuse))
-# grafico= sull asse diagonale le singole variabili e la distribuzione dei dati 
-# coefficienti di correlazione, 0.92 = molto correlati
+# M.C. prendo il dataset Meuse e lo mando nella funzione scaricata "ggpairs"
+# M.C. [,3:6] = dalla terza colonna alla sesta colonna per avere tutti gli elementi (li vedo da head(meuse))
+# M.C. grafico= sull asse diagonale le singole variabili e la distribuzione dei dati 
+# M.C. coefficienti di correlazione, 0.92 = molto correlati
 
 library(GGally)
 ggpairs(meuse[,3:6])
 
-# Spatial, devo spiegare a R che "meuse" ha delle coordinate x e y
-# head(meuse) vedo le coordinate
+# M.C. Spatial, devo spiegare a R che "meuse" ha delle coordinate x e y
+# M.C. head(meuse) vedo le coordinate
 
 head(meuse)
 
-# inserire per primo il dataset e poi speigo che ho x y , gli ho spiegato quali sono le mie coordinate
-# uso ~ per gruppo di coordinate
+# M.C. inserire per primo il dataset e poi speigo che ho x y , gli ho spiegato quali sono le mie coordinate
+# M.C. uso ~ per gruppo di coordinate
 
 coordinates(meuse)=~x+y
 
 plot(meuse)
 
-# inserisco nella funzione il dataset per creare grafico spaziale grazie a spplot (plotto i dati spazialmente)
-# grafico= come si ditribuisce lo zinco attorno al fiume, vicino all'acqua (giallo) valori molto alti, lontani dal fiume puntini neri valore basso
+# M.C. inserisco nella funzione il dataset per creare grafico spaziale grazie a spplot (plotto i dati spazialmente)
+# M.C. grafico= come si ditribuisce lo zinco attorno al fiume, vicino all'acqua (giallo) valori molto alti, lontani dal fiume puntini neri valore basso
 
 spplot(meuse,"zinc")
 
@@ -103,30 +202,31 @@ library(sp)
 
 # dati da usare
 data(meuse)
-head(meuse)       controlla cosa c'è dentro al dataset
+head(meuse)       # M.C. controlla cosa c'è dentro al dataset
 
 #coordinate del dataset (dataframes in R)
 coordinates(meuse)=~x+y
 
-# spplot dei dati di zinco, tabella della distribuzione 
+# M.C. spplot dei dati di zinco, tabella della distribuzione 
 spplot(meuse,"zinc")
 
 # Exercise: spplot dei dati di rame
-head(meuse)      per capire come si chiamano i nomi delle colonne
-names(meuse)    come sopra
+head(meuse)      # M.C. per capire come si chiamano i nomi delle colonne
+names(meuse)     # M.C. come sopra
 
 spplot(meuse,"copper")
 
-# bubble per plottare i dati
+# M.C. bubble per plottare i dati. Funzione "bubble" nel pacchetto sp, rappresento uguale a spplot MA i valori piu alti hanno bolle piu grandi 
 bubble(meuse,"zinc")
 
 # Exercise: bubble del rame, colore rosso
 bubble(meuse,"copper",col="red")
-
+    # M.C. il grafico del rame ha dei valori piuttosto alti nella parte vicino al fume e piu bassi allontanadosi dal fiume 
+    # M.C. il fiume è molto inquinato 
 # foraminiferi (Sofia), carbon capture (Marco)
 # array             
-foram <- c(10, 20, 35, 55, 67, 80)         array o vettore--- per inserire dataset in R, si è creato un oggetto
-carbon <- c(5, 15, 30, 70, 85, 99)         significa che la serie di numeri si chiamano carbon e foram
+foram <- c(10, 20, 35, 55, 67, 80)         # M.C. array o vettore--- per inserire dataset in R, si è creato un oggetto
+carbon <- c(5, 15, 30, 70, 85, 99)         # M.C. significa che la serie di numeri si chiamano carbon e foram
 plot(foram, carbon,col="green", cex=2, pch=11)
 
 # Dati dall'esterno (es. tabella su Covid-19)
@@ -142,7 +242,7 @@ covid <- read.table("covid_agg.csv",head=TRUE)
 #####################################
 #####################################
 # Codice per analisi dei point patterns, dati legati ai punti
-install.packages("ggplot2") # per installare un pacchetto
+install.packages("ggplot2") # M.C. per installare un pacchetto
 install.packages("spatstat")
 
 library(ggplot2)
@@ -150,35 +250,37 @@ library(spatstat)
 
 setwd("C:/lab")     
 
-covid <- read.table("covid_agg.csv", head=T)  # per importare dati di una tabella
+covid <- read.table("covid_agg.csv", head=T)  # M.C. per importare dati di una tabella
 
 head(covid)
 
-plot(covid$country,covid$cases)    # $ collega un pezzo ad un altro, in questo caso collega la colonna al proprio dataset altrimenti non riconosce la colonna
-plot(covid$country,covid$cases,las=0)  # per metterlo verticale
-plot(covid$country,covid$cases,las=1)  # las=1 le etichette di asse Y diventano orizzontali
-plot(covid$country,covid$cases,las=2)  # las=2 le etichette della asse X sono verticali
-plot(covid$country,covid$cases,las=3)  # laberls verticali
+plot(covid$country,covid$cases)    # M.C. $ collega un pezzo ad un altro, in questo caso collega la colonna al proprio dataset altrimenti non riconosce la colonna
+plot(covid$country,covid$cases,las=0)  # M.C. per metterlo verticale
+plot(covid$country,covid$cases,las=1)  # M.C. las=1 le etichette di asse Y diventano orizzontali
+plot(covid$country,covid$cases,las=2)  # M.C. las=2 le etichette della asse X sono verticali
+plot(covid$country,covid$cases,las=3)  # M.C. laberls verticali
 
-plot(covid$country,covid$cases,las=3,cex.lab=0.5, cex.axis=0.5) # per rimpicciolire le scritte di asse X
+plot(covid$country,covid$cases,las=3,cex.lab=0.5, cex.axis=0.5) # M.C. "cex.axis" per rimpicciolire le scritte di asse X
 
 # ggplot2
+# M.C. mpg è un dataset di prassi già all'interno di ggpl0t2
 data(mpg)
 head(mpg)
-
-# data
-# aes
-# tipo di geometria
+      
+# M.C. Quello che serve a ggplot2 per creare un grafico è 1. data set 2. aestetics, cioè le variabili 3. La geometria con cui si vuole visualizzare
+    # data
+    # aes
+    # tipo di geometria
 ggplot(mpg,aes(x=displ,y=hwy)) + geom_point()
 ggplot(mpg,aes(x=displ,y=hwy)) + geom_line()
 ggplot(mpg,aes(x=displ,y=hwy)) + geom_polygon()
 
 # ggplot di covid
-ggplot(covid,aes(x=lon,y=lat,size=cases)) + geom_point()     # size=cases dimensione variabile in base ai dati
+ggplot(covid,aes(x=lon,y=lat,size=cases)) + geom_point()     # M.C. size=cases dimensione variabile in base ai dati
 
 
-# density intende la densità dei punti in una mappa
-# create dataset for spatstat
+# M.C. density intende la densità dei punti in una mappa
+# M.C. create dataset for spatstat
 attach(covid)
 covids <- ppp(lon, lat, c(-180,180), c(-90,90))
 
@@ -189,26 +291,25 @@ points(covids)
 # save the .RData
 
 
-setwd("C:/lab")  # recuperiamo i dati all'interno della cartella Lab
+setwd("C:/lab")  # M.C. recuperiamo i dati all'interno della cartella Lab
 load("point_pattern.RData")
-ls()    # per vedere cosa c'è dentro il file
+ls()    # M.C. per vedere cosa c'è dentro il file
 library(spatstat)
 
 plot(d)
 
-# cambiare colori nella mappa --> palette
-cl <- colorRampPalette(c('yellow','orange','red')) (100)  # cl è il nome. (100) indica il numero di gradazioni di colore, che vanno dal yellow al red
-plot(d, col=cl)  # creare grafico di "d" con i colori di "cl"
+# M.C. cambiare colori nella mappa --> palette
+cl <- colorRampPalette(c('yellow','orange','red')) (100)  # M.C. cl è il nome. (100) indica il numero di gradazioni di colore, che vanno dal yellow al red
+plot(d, col=cl)  # M.C. creare grafico di "d" con i colori di "cl"
 
 # Exercise: plot della mappa della densita dal verde al blu
 cl1 <- colorRampPalette(c('yellow','green','blue')) (100)
-points(covids)  # inserire punti sulla mappa
+points(covids)  # M.C. inserire punti sulla mappa
 
-# 
-coastlines <- readOGR("ne_10m_coastline.shp") # se da errore può mancare la libreria, non devono essere dentro ad un'altra cartella
-install.packages("rgdal")   # installare il pacchetto
+coastlines <- readOGR("ne_10m_coastline.shp") # M.C. se da errore può mancare la libreria, non devono essere dentro ad un'altra cartella
+install.packages("rgdal")   # M.C. installare il pacchetto
 library(rgdal)
-    # a questo punto posso rimandare il comando
+    # M.C. a questo punto posso rimandare il comando
 coastlines <- readOGR("ne_10m_coastline.shp")
 plot(coastlines, add=T)
 
@@ -230,26 +331,26 @@ plot(coastlines, add=T)
 
 # packages: raster
 install.packages("raster")
-library(raster)    # richiamo dati nel pacchetto raster
+library(raster)    # M.C. richiamo dati nel pacchetto raster
 
 setwd("C:/lab/")
 
-# ... <- brick prende una immagine dentro una cartella e le da un nome
+# M.C. ... <- brick prende una immagine dentro una cartella e le da un nome
 p224r63_2011 <- brick("p224r63_2011_masked.grd")
 
 plot(p224r63_2011)
 
 #day 2
-# per ricaricare il dato di ieri
+# M.C. per ricaricare il dato di ieri
 setwd("C:/lab/")
 load("C:/Lab/R_code_teleril.RData")
-load("teleril")     # se non c'è estensione RData (non sempre Windows salva con estensione)
+load("teleril")     # M.C. se non c'è estensione RData (non sempre Windows salva con estensione)
 ls()
 
-library(raster)     # le librerie vanno lanciate tutte le volte
+library(raster)     # M.C. le librerie vanno lanciate tutte le volte
 
-plot(p224r63_2011) # significato bande: B1: blue, B2: green, B3: red, B4: near infrared (nir), B5: medium infrared, B6: thermal infrared, B7: medium infrared
-cl <- colorRampPalette(c('black','grey','light grey'))(100) # 100 indica le sfumature di colore. Dal nero al grigio chiaro ci sono 100 sfumature
+plot(p224r63_2011) # M.C. significato bande: B1: blue, B2: green, B3: red, B4: near infrared (nir), B5: medium infrared, B6: thermal infrared, B7: medium infrared
+cl <- colorRampPalette(c('black','grey','light grey'))(100) # M.C. 100 indica le sfumature di colore. Dal nero al grigio chiaro ci sono 100 sfumature
 plot(p224r63_2011, col=cl)
 # esperimento grey scale low amount of colours
 cllow <- colorRampPalette(c('black','grey','light grey'))(5)
@@ -259,16 +360,16 @@ names(p224r63_2011)
 
 clb <- colorRampPalette(c('dark blue','blue','light blue'))(100)
 plot(p224r63_2011$B1_sre, col=clb)  
-# attch(dataframe) non funziona con il pacchetto raster
-# simpbolo che lega la colonna (la banda) al dataset (immagine satellitare): $
+# M.C. attch(dataframe) non funziona con il pacchetto raster
+# M.C. simpbolo che lega la colonna (la banda) al dataset (immagine satellitare): $
 
 # Exercise: plottare la banda dell'infrarosso vicino (B4: nea infrared)
-# colorRampPalette che varia dal rosso, all'arancione, al giallo
+# M.C. colorRampPalette che varia dal rosso, all'arancione, al giallo
 clnir <- colorRampPalette(c('red','orange','yellow'))(100)
 plot(p224r63_2011$B4_sre, col=clnir)
 
 # multiframe
-par(mfrow=c(2,2))       # ci permette di utilizzare "a blocchi" la finestra. Incollare dopo aver inserito immagine
+par(mfrow=c(2,2))       # M.C. ci permette di utilizzare "a blocchi" la finestra. Incollare dopo aver inserito immagine
 # blue
 clb <- colorRampPalette(c('dark blue','blue','light blue'))(100)
 plot(p224r63_2011$B1_sre, col=clb)
@@ -282,44 +383,44 @@ plot(p224r63_2011$B3_sre, col=clr)
 clnir <- colorRampPalette(c('red','orange','yellow'))(100)
 plot(p224r63_2011$B4_sre, col=clnir)
 
-# comando per chiudere automaticamente la finestra grafica
+# M.C. comando per chiudere automaticamente la finestra grafica
 dev.off()
 
 # natural colours
-# 3 componenti: R G B
-# 3 bands: R = banda del rosso, G = banda del verde, B = banda del blu
-#B1: blue - 1
-#B2: green - 2
-#B3: red - 3
-#B4: near infrared (nir) - 4
+# M.C. 3 componenti: R G B
+# M.C. 3 bands: R = banda del rosso, G = banda del verde, B = banda del blu
+#M.C. B1: blue - 1
+#M.C. B2: green - 2
+#M.C. B3: red - 3
+#M.C. B4: near infrared (nir) - 4
 # plotRGB()
 
-plotRGB(p224r63_2011, r=3, g=2, b=1)     # solo tre componenti per volta
-# stretch prende i colori e li distente
-plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")  # come li vedrebbe un occhio umano. Difficile riconoscere la vegetazione
+plotRGB(p224r63_2011, r=3, g=2, b=1)     # M.C. solo tre componenti per volta
+# M.C. stretch prende i colori e li distente
+plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")  # M.C. come li vedrebbe un occhio umano. Difficile riconoscere la vegetazione
 
 # nir
 # false colours
-plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin") # le zone con una pianta sono colorate di rosso, parte agricola è celeste, parti rosa sono piante coltivate
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin") # M.C. le zone con una pianta sono colorate di rosso, parte agricola è celeste, parti rosa sono piante coltivate
 
-# salvare immagine R su cartella Lab, per salvare in png: png("primografico.png")
-pdf("primografico.pdf")  # primografico è il nome del pdf all'interno della cartella
+# M.C. salvare immagine R su cartella Lab, per salvare in png: png("primografico.png")
+pdf("primografico.pdf")  # M.C. primografico è il nome del pdf all'interno della cartella
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
 dev.off()
 
 
 # multiframe
-par(mfrow=c(2,1))  # metto le due immagini vicino a confronto
-plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin") # colori naturali
-plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin") # colori falsati
-dev.off() # cancellare le immagini
+par(mfrow=c(2,1))  # M.C. metto le due immagini vicino a confronto
+plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin") # M.C. colori naturali
+plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin") # M.C. colori falsati
+dev.off() # M.C. cancellare le immagini
 
-# nir nella componente red
+# M.C. nir nella componente red
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin")
 # Exercise: nir nella componente green
-plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="Lin")  # le piante sono verde fluorescente
-# nir nella componente blu
-plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="Lin")  # piante sono blu
+plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="Lin")  # M.C. le piante sono verde fluorescente
+# M.C. nir nella componente blu
+plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="Lin")  # M.C. piante sono blu
 
 ### day 2
 library(raster)
@@ -328,7 +429,7 @@ setwd("C:/lab/")
 # lista
 ls()
 
-# ... <- brick prende una immagine dentro una cartella e le da un nome
+# M.C. ... <- brick prende una immagine dentro una cartella e le da un nome
 p224r63_1988 <- brick("p224r63_1988_masked.grd")
 plot("p224r63_1988")
 par(mfrow=c(2,2))
@@ -345,30 +446,42 @@ plot(p224r63_1988$B3_sre, col=clr)
 # nir
 clnir <- colorRampPalette(c('red','orange','yellow'))(100)
 plot(p224r63_1988$B4_sre, col=clnir)
+      # M.C. i valori sono molto alti nel NIR ed idica un elevata presenza di piante
+      # M.C. i valori del blu e del rosso invece sono valori bassi (perche assorbite dalle inate per la fotosintesi)
 
-dev.off() # chiudere la finestra attuale
+dev.off() # M.C. chiudere la finestra attuale
 
-# bande dei sensori nel satellite:
-   # B1: blue - 1
-   # B2: green - 2
-   # B3: red - 3
-   # B4: near infrared (nir) - 4
+# M.C. bande dei sensori nel satellite:
+   # M.C. B1: blue - 1
+   # M.C. B2: green - 2
+   # M.C. B3: red - 3
+   # M.C. B4: near infrared (nir) - 4
+   # M.C. B4: near infrared (nir)
+   # M.C. B5: medium infrared
+   # M.C. B6: thermal infrared
+   # M.C. B7: medium infrared
+      
+# M.C. natural colours (come occhio umano), componenti R,G, e B ( computer plotta 3 bande per volta)
+plotRGB(p224r63_2011, r=3, g=2, b=1)
+      # appare nera l'immagine e allora devo strecchare i colori e l'immagine 
+      # stretch=lin cioè lineare
 
 plotRGB(p224r63_1988, r=3, g=2, b=1, stretch="Lin")
+      
 
 # Exercise: plot the imag using the nir on the "r" component in the RGB space
 plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="Lin")
-plotRGB(p224r63_1988, r=4, g=2, b=1, stretch="Lin") # entrambe corrette
+plotRGB(p224r63_1988, r=4, g=2, b=1, stretch="Lin") # M.C. entrambe corrette
 
 # plot delle due immagini 1988 e 2011
 par(mfrow=c(2,1))
-plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="Lin", main="1988") # main è il titolo del grafico
+plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="Lin", main="1988") # M.C. main è il titolo del grafico
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin", main="2011")
 
-# calcolo indice di come sta la vegetazione (Indice di Vegetazione)
+# M.C. calcolo indice di come sta la vegetazione (Indice di Vegetazione)
 # spectral indices
-# dvi1988 = nir1988-red1988 se la pianta è sana il valore è alto
-# $ lega diversi pezzi tra loro 
+# M.C.dvi1988 = nir1988-red1988 se la pianta è sana il valore è alto
+# M.C. $ lega diversi pezzi tra loro 
 dvi1988 <- p224r63_1988$B4_sre - p224r63_1988$B3_sre
 plot(dvi1988)
 
@@ -380,7 +493,7 @@ plot(dvi2011)
 difdvi <- dvi2011 - dvi1988
 plot(difdvi)
 cldifdvi <- coloRampPalette(c('red','white','blue'))(100)
-plot(difdvi, col=cldifdvi) # zone in cui la veg è tagliata o in sofferenza è rossa, le piante che stanno meglio sono blu, situazioni stabili sono colore bianco
+plot(difdvi, col=cldifdvi) # M.C. zone in cui la veg è tagliata o in sofferenza è rossa, le piante che stanno meglio sono blu, situazioni stabili sono colore bianco
 
 # visualize the output
 # multiframe 1988rgb, 2011rgb, difdvi
@@ -392,7 +505,7 @@ plot(difdvi, col=cldifdvi)
 dev.off()
 
 # Cambiare la risoluzione
-p224r63_2011lr <- aggregate(p224r63_2011, fact=10) # aggrega i pixel e fa risoluzione piu bassa
+p224r63_2011lr <- aggregate(p224r63_2011, fact=10) # M.C. aggrega i pixel e fa risoluzione piu bassa
 p224r63_2011
 p224r63_2011lr
 par(mfrow=c(2,1))
@@ -410,7 +523,7 @@ plotRGB(p224r63_2011lr50, r=4, g=3, b=2, stretch="Lin")
 
 # dvi2011 low resolution
 dvi2011lr50 <- p224r63_2011lr50$B4_sre - p224r63_2011lr50$B3_sre
-dev.off() #????
+dev.off()
 plot(dvi2011lr50)
 
 # dvi1988 low resolution
