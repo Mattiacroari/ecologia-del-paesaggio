@@ -1292,10 +1292,10 @@ setwd("C:/lab/snow/")
 
    # M.C. adesso è possibile fare il plot finale con tutte le immagini all'interno
    # M.C. con centinaia di immagini, invece di plottare ogni singolo dato, si può fare in 4 passaggi:
-   # M.C. 1. si inseriscono tutti in una cartella.
-   # M.C. 2. importare la lista con comando lapply()
-   # M.C. 3. compattare con codice "stack()"
-   # M.C. 4. inviare il plot
+      # M.C. 1. si inseriscono tutti in una cartella.
+      # M.C. 2. importare la lista con comando lapply()
+      # M.C. 3. compattare con codice "stack()"
+      # M.C. 4. inviare il plot
    cl <- colorRampPalette(c('dark blue','blue','white'))(100)
    plot(SNOW, col=cl)
   
