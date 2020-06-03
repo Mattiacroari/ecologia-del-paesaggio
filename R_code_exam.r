@@ -1334,5 +1334,30 @@ plot(snow2010r.italy, col=clb)
 # M.C. abbiamo crato una nuova immagine piu piccola dell'immagine originale
 # M.C. stack e la serie multitemporale del periodo analizzato
 # M.C. facciamo un crop dell'intero stack
+     
+# Esercizio: creare un crop dall'intero stack dell'Italia
+snow.multitemp.italy <- crop(snow.multitemp, extension)
+plot(snow.multitemp.italy, col=clb)
+   # M.C. si vedono i dati snow su tutta l'Italia
+   # M.C. vedere i range della legenda, sono molto diverse tra loro.
+   # M.C. metterle tutte uguali in modo tale che siano comparabili
+snow.multitemp.italy    # M.C. per vedere i dati e capire quali sono i valori minimi e massimi della legenda
+plot(snow.multitemp.italy, col=clb, zlim=c(20,200))    # M.C. legende uguali e mappe comparabili
+# M.C. "zlim" serve a correggere la legenda
+# M.C. analisi su tutto lo stack dell'Italia
+# M.C. es. boxplot , regressione tra due immagini, previsione ecc..
+# M.C. boxplot: si cerca la mediana dei valori intermedie e si vedono le variazioni nel tempo    
+# M.C. valori molto fuori dalla mediana li possiamo mettere come outline
+boxplot(snow.multitemp.italy, horizontal=T,outline=F)
+  # M.C. i valori massimi di copertura nevosa calano. anche la mediana cala. da qui si capisce che la presenza di neve cala nel tempo
+  # M.C. abbiamo importato anche una immagine in piu, la previsione, quindi abbiamo valori negativi non realistici
+  # M.C. abbiamo preso tutti i file con .tif, quindi anche la previsione
+  # M.C. se mettiamo "snow", abbiamo solo le 5 immagini 
+ 
+# M.C. funzione prediction funziona per qualsiasi dato
+# M.C. la normalizzazione significa riportare i dati da 0-255 (in questo caso)
+      # M.C. contattare in caso di problemi
       
-
+      
+      
+      
