@@ -11,6 +11,7 @@
 ### 8. R code multitempNO2
 ### 9. R code snow
 ### 10. R code patches
+### 11. R code crop
 ### Copernicus data: https://land.copernicus.vgt.vito.be/PDF/portal/Application.html
 
 ##################################### 1.
@@ -1264,7 +1265,74 @@ ggplot(output, aes(x=time, y=npatches, color="red")) + geom_bar(stat="identity",
 # M.C. si è persa molta foresta e quella rimasta è stata frammentata ed è molto pericoloso
 # M.C. organismi divisi in piccolissimi gruppi e l'estinzione è più probabile
 
+      
+      
+##################################
+##################################
+##################################
+# 11. R code crop - simulazione d'esame
+      
+# lapply applica una lista a tutti i file
+# M.C. immagini nella cartella snow
+# M.C. mettere la cartella snow come setwd
+setwd("C:/lab/snow/")
+# M.C. si caricano i dati da Copernicus (non solo Copernicus funziona)
+# M.C. per fare un trend temporaneo
+      
+# esercizio: caricare tutte le immagini snow
+   # M.C. diverse tecniche: lapply o caricare una immagine alla volta
+   library(raster)
+   snowlist <- list.files(pattern=".tif")
+   snowlist # M.C. vedo cosa c'è dentro, tutti EN_00....ecc
 
+   # M.C. uso la funzione lapply()  : per caricare i dati tutti assieme
+   # M.C. applichiamo alla lista "rlist" la funzione "raster". Il tutto è associato ad un nome, "listafinale"
+   listafinalesnow <- lapply(snowlist, raster) # M.C. tutti i file sono inseriti in una unica lista
+   SNOW <- stack(listafinalesnow) # M.C. EN è il nome
 
-
+   # M.C. adesso è possibile fare il plot finale con tutte le immagini all'interno
+   # M.C. con centinaia di immagini, invece di plottare ogni singolo dato, si può fare in 4 passaggi:
+   # M.C. 1. si inseriscono tutti in una cartella.
+   # M.C. 2. importare la lista con comando lapply()
+   # M.C. 3. compattare con codice "stack()"
+   # M.C. 4. inviare il plot
+   cl <- colorRampPalette(c('dark blue','blue','white'))(100)
+   plot(SNOW, col=cl)
+  
+   # procedura prof
+   rlist <- list.files(pattern="snow")
+   rlist 
+   list_rast <- lapply(rlist, raster)
+   snow.multitemp <- stack(list_rast)  
+   clb <- colorRampPalette(c('dark blue','blue','light blue'))(100) # 
+   plot(snow.multitemp,col=clb)
+      
+      
+# fare zoom su un preciso dato
+# M.C. "find ext" (Ctrl-F) per trovare comandi su Github
+# M.C. possibile definire l'estensione mettendo i numero
+# M.C.  tra () mettere i valori di X minima e massima, Y minima e massima
+# M.C. per vedere i nomi dei vari file: snow.multitemp  
+# M.C. se zoom sulla parte italiana:
+   # M.C. 1'<- rettangolo su italia
+   # M.C. 2'<- definire le coordinate
+# esempio Italia cade tra i 6 e 20 gradi (X) e 35 e 50 (Y)
+ext <- c(6, 20, 35, 50)
+     # M.C. fare zoom dell'intero set/immagine
+zoom(snow.multitemp$snow2010r, ext=extension)
+   # M.C. rifare il plot dell'immagine originale per riuscire meglio a fare drawExtent
+plot(snow.multitemp$snow2010r, col=clb)
+zoom(snow.multitemp$snow2010r, ext=drawExtent()) # M.C. bisogna mettere ext=... Mentre in crop no
+# M.C. formare un rettangolo sull'immagine. Un solo click per ritagliare la immagine che si vuole
+# M.C. partire dal punto in alto a sinistra, tenere premuto, formare il rettangolo, rilasciare il dito e cliccare una volta.
+      
+# comando "crop"     
+# M.C. "crop" taglia l'immagine solo su quella zona
+extension <- c(6, 20, 35, 50)
+snow2010r.italy <- crop(snow.multitemp$snow2010r, extension)
+plot(snow2010r.italy, col=clb)
+# M.C. abbiamo crato una nuova immagine piu piccola dell'immagine originale
+# M.C. stack e la serie multitemporale del periodo analizzato
+# M.C. facciamo un crop dell'intero stack
+      
 
