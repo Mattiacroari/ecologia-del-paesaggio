@@ -44,8 +44,18 @@ boxplot(EN, horizontal=T,outline=F,axes=T)
 
 
 
-
-
+# fare zoom su zona del Mediterraneo/MENA
+# diversi modi:
+   # definire le coordinate:
+     ext <- c(..., ..., ..., ...)   # tra parentesi ci vanno le coordinate X e Y (minimi e massimi)
+     zoom(snow.multitemp$snow2010r, ext=extension)
+     plot(snow.multitemp$snow2010r, col=clb)
+     zoom(snow.multitemp$snow2010r, ext=drawExtent())
+       # partire dal punto in alto a sinistra, tenere premuto, formare il rettangolo, rilasciare il dito e cliccare una volta.
+   # usare comando crop:
+     extension <- c(6, 20, 35, 50)   # creo una immagine più piccola di quella originale
+     snow2010r.italy <- crop(snow.multitemp$snow2010r, extension)
+     plot(snow2010r.italy, col=clb)
 
 
 
