@@ -1356,7 +1356,7 @@ boxplot(snow.multitemp.italy, horizontal=T,outline=F)
  
 # M.C. funzione prediction funziona per qualsiasi dato
 # M.C. la normalizzazione significa riportare i dati da 0-255 (in questo caso)
-      # M.C. contattare in caso di problemi
+  # M.C. contattare in caso di problemi
       
       
       
