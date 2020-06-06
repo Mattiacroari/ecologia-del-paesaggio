@@ -311,6 +311,11 @@ plot(d, col=cl)  # M.C. creare grafico di "d" con i colori di "cl"
 cl1 <- colorRampPalette(c('yellow','green','blue')) (100)
 points(covids)  # M.C. inserire punti sulla mappa
 
+# M.C. posso anche mettere i confini degli altri stati
+# M.C. coastlines = nome del nuovo file
+# M.C. readOGR è parte di una libreria GDAL (libreia Geospaziale che permette di leggere qualsiasi tipo di file raster o vettoriale)
+# M.C. rGDAL libreria di R
+# M.C. installo con le virgolette perche devo uscire da GitHub
 coastlines <- readOGR("ne_10m_coastline.shp") # M.C. se da errore può mancare la libreria, non devono essere dentro ad un'altra cartella
 install.packages("rgdal")   # M.C. installare il pacchetto
 library(rgdal)
@@ -345,7 +350,16 @@ setwd("C:/lab/")
 p224r63_2011 <- brick("p224r63_2011_masked.grd")
 
 plot(p224r63_2011)
-
+# M.C : Ho B1,B2,... cioe diverse bande con diverse riflettanze nelle diverse lunghezze d'onda
+# M.C : in tutto 7 sensori 
+   # M.C. B1: blue
+   # M.C. B2: green
+   # M.C. B3: red
+   # M.C. B4: near infrared (nir)
+   # M.C. B5: medium infrared
+   # M.C. B6: thermal infrared
+   # M.C. B7: medium infrared
+      
 #day 2
 # M.C. per ricaricare il dato di ieri
 setwd("C:/lab/")
@@ -403,8 +417,11 @@ dev.off()
 
 plotRGB(p224r63_2011, r=3, g=2, b=1)     # M.C. solo tre componenti per volta
 # M.C. stretch prende i colori e li distente
-plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")  # M.C. come li vedrebbe un occhio umano. Difficile riconoscere la vegetazione
-
+plotRGB(p224r63_2011, r=3, g=2, b=1, stretch="Lin")  
+# M.C. come li vedrebbe un occhio umano. Difficile riconoscere la vegetazione
+      # M.C. allora aggiungo anche NIR ( tramite r=4 ) 4= infrarosso vicino 
+      # M.C. scalo tutti i colori di uno per formare FALSE COLOR
+      
 # nir
 # false colours
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin") # M.C. le zone con una pianta sono colorate di rosso, parte agricola è celeste, parti rosa sono piante coltivate
@@ -428,7 +445,7 @@ plotRGB(p224r63_2011, r=3, g=4, b=2, stretch="Lin")  # M.C. le piante sono verde
 # M.C. nir nella componente blu
 plotRGB(p224r63_2011, r=3, g=2, b=4, stretch="Lin")  # M.C. piante sono blu
 
-### day 2
+### day 3
 library(raster)
 setwd("C:/lab/")
 
