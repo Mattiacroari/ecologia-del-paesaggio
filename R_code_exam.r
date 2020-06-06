@@ -455,7 +455,7 @@ ls()
 # M.C. ... <- brick prende una immagine dentro una cartella e le da un nome
 p224r63_1988 <- brick("p224r63_1988_masked.grd")
 plot("p224r63_1988")
-par(mfrow=c(2,2))
+par(mfrow=c(2,2))   # M.C. uso ancora par,mfrow per arere piu immagini nella stessa frame
 
 # green
 clg <- colorRampPalette(c('dark green','green','light green'))(100)
@@ -503,7 +503,9 @@ plotRGB(p224r63_1988, r=4, g=3, b=2, stretch="Lin", main="1988") # M.C. main è 
 plotRGB(p224r63_2011, r=4, g=3, b=2, stretch="Lin", main="2011")
 
 # M.C. calcolo indice di come sta la vegetazione (Indice di Vegetazione)
-# spectral indices
+# spectral index
+      # M.C. pianta sana riflette molto nell'INFRAROSSO (alta riflettanza) e poco nel blu e rosso
+      # M.C. uso l'indice chiamato DVI (different vegetation index)
 # M.C.dvi1988 = nir1988-red1988 se la pianta è sana il valore è alto
 # M.C. $ lega diversi pezzi tra loro 
 dvi1988 <- p224r63_1988$B4_sre - p224r63_1988$B3_sre
@@ -552,6 +554,7 @@ dev.off()
 plot(dvi2011lr50)
 
 # dvi1988 low resolution
+     # M.C. Diminuisco la risoluzione dell'immagine del 1988 (risoluzione 1500m con fattore=50)
 p224r63_1988lr50 <- aggregate(p224r63_1988, fact=50)
 dvi1988lr50 <- p224r63_1988lr50$B4_sre - p224r63_1988lr50$B3_sre
 
@@ -612,6 +615,8 @@ plot(p224r63_2011c$map)
 # M.C. possiamo fare piu mappe con piu o meno classi per vedere le difernze tra i cluster dei pixel 
 # M.C. con due classi incertezza bassa
 
+      
+# Parte 2
       
 # exercise: caricare il workspace point_pattern.Rdata (load("...")) e creare un grafico
  # andare in Session/Set Working Directory/Choose Directory
@@ -740,7 +745,7 @@ points(Tesippp, col="green")   # M.C. i valori piu bassi sono a nord e sud-ovest
 
 # caricare librerira rgdal
 library(rgdal)
-sanmarino <- readOGR("San_Marino.shp")
+sanmarino <- readOGR("San_Marino.shp")   # M.C. OGR=file vettoriale
 plot(sanmarino)   # M.C. file vettoriale fatto con punti,linee e coordinate. questo è un poligono
 plot(interpol, add=T)   # M.C. add=T aggiunge pezzi alla mappa precedente, altrimenti cancella la mappa appena caricata. tutto sovrapposto
 points(Tesippp, col="green")  # M.C. aggiungere i punti
@@ -803,17 +808,17 @@ d1c
 
 plot(d1c$map)
 
-# cambio i colori 
+# M.C. cambio i colori 
 
 cl <- colorRampPalette(c('black','green'))(100) # M.C. ho la foresta in verde e tutto il resto in nero
 plot(d1c$map, col=cl)
 
 
-# Classifico anche la seconda immagine
+# M.C. Classifico anche la seconda immagine
 
 d2c <- unsuperClass(defor2, nClasses=2) 
 d2c
-# d2c$map è la mia mappa
+# M.C. d2c$map è la mia mappa
 
 plot(d2c$map)
 cl <- colorRampPalette(c('black','green'))(100) # M.C. ho la foresta in verde e tutto il resto in nero
@@ -821,7 +826,7 @@ plot(d2c$map, col=cl)
 
 dev.off()
 
-# plotto le due immagine appena ottenute
+# M.C. plotto le due immagine appena ottenute
 par(mfrow=c(2,1))
 plot(d2c$map, col=cl)
 plot(d1c$map, col=cl)
@@ -837,29 +842,29 @@ freq(d1c$map) # M.C. mi conta i pixel per ogni classe
 # M.C. freq = freq della mappa per 100/il totale
 
 totd1 <- 305095+36197
-totd1   # mi da 341292
+totd1   # M.C. mi da 341292
 
 percent1 <- freq(d1c$map) * 100 / totd1
 percent1   # M.C. mi mostra le percentuali (89.4% e 10.6%)
 
 # MAPPA 2
 
-freq(d2c$map) # frequenza 2 è la classe della foresta
+freq(d2c$map) # M.C. frequenza 2 è la classe della foresta
 totd2 <- 178625+164101
 totd1 
 percent2 <- freq(d2c$map) * 100 / totd2
-percent2 # che è 47.8% e 52.2%(di foresta)
+percent2 # M.C. che è 47.8% e 52.2%(di foresta)
 
 # M.C. CREO UN DATAFRAME, una picoola tabella con i vari volri di percentuali
 
 cover <- c("Agriculture","Forest")
 before <- c(10.6,89.4)
 after <- c(47.8,52.2)
-# creo le colonne
+# M.C. creo le colonne, prima e dopo disboscamento
 
 output <- data.frame(cover,before,after)
 
-# ADESSO devo plottare i valori
+# M.C. ADESSO devo plottare i valori
 # richimao "ggplot2"
 
 library(gglpot2)
@@ -888,14 +893,13 @@ output # M.C. visualizzare la tabella costruita precedentemente. Si vede come l'
 # M.C. il colore si basa sulla copertura
 
 # M.C. istogrammi della copertura prima della deforestazione
-ggplot(output, aes(x=cover, y=before, color=cover)) +
-geom_bar(stat="identity", fill="white")
+p1 <- ggplot(output, aes(x=cover, y=before, color=cover)) + geom_bar(stat="identity", fill="white")
 # M.C. avremo una bassa % di agricoltura e una alta % di foresta
-
+plot(p1)
 # exercise: plotta l'istogramma della superficie dopo la deforestazione
 # M.C. after si trova nella tabella lanciata con output
-ggplot(output, aes(x=cover, y=after, color=cover)) +
-geom_bar(stat="identity", fill="white")
+p2 <- ggplot(output, aes(x=cover, y=after, color=cover)) + geom_bar(stat="identity", fill="white")
+plot(p2)
 # M.C. plot degli istogrammi vicini, cosi visibili assieme
 # M.C. fare altro pacchetto perche par, con ggplot, non funziona
 install.packages("gridExtra")
@@ -903,11 +907,9 @@ library(gridExtra)  # oppure: require(Extra)
 
 # grid.arrange(plot1, plot2, nrow = 1)
 # M.C. prende vari plot(es 1 e 2) e li mette nella stessa immagine (stessa funzione di )
-grafico1 <- ggplot(output, aes(x=cover, y=before, color=cover)) +
-geom_bar(stat="identity", fill="white")
+grafico1 <- ggplot(output, aes(x=cover, y=before, color=cover)) + geom_bar(stat="identity", fill="white")
 
-grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) +
-geom_bar(stat="identity", fill="white")
+grafico2 <- ggplot(output, aes(x=cover, y=after, color=cover)) + geom_bar(stat="identity", fill="white")
 grid.arrange(grafico1, grafico2, nrow = 1)  # M.C. al posto di "plot1" e "plot2" inserire i nomi dei grafici precedentemente creati
 
 dev.off()  # chiudere il lavoro
@@ -959,7 +961,8 @@ EN01 <- raster("EN_0001.png")
 plot(EN01)   # M.C. visualizziamo immagine
 
 # esercizio: importare tutte le immagini 
-
+# M.C. se metto lo zero prima del numero me le mette tutte in ordine
+      
 EN02 <- raster("EN_0002.png")
 EN03 <- raster("EN_0003.png")
 EN04 <- raster("EN_0004.png")
@@ -1023,6 +1026,10 @@ plot(EN13, col=cl)
 plot ( EN01, EN02, EN03, EN04, EN05, col=cl)  # M.C. plotta il singolo raster e così non si può fare. Bisogna fare un dataset con all'interno tutte le immagini
 
 # day 2
+# M.C. come faccio ad imporatre tutti ifile allo stesso tempo? SE HO TANTI FILES!!
+# M.C. devo creare una cartella all'interno della cartella LAB e cambiare la working directory
+# M.C. metto tutte le immagini nella nuova cartella "esa_no2" e la imposto come working directory
+
 setwd("C:/lab/")
 
 # caricare dato precedente
@@ -1041,7 +1048,8 @@ rlist # M.C. vedo cosa c'è dentro, tutti EN_00....ecc
 # M.C. uso la funzione lapply()  : per caricare i dati tutti assieme
 # M.C. applichiamo alla lista "rlist" la funzione "raster". Il tutto è associato ad un nome, "listafinale"
 listafinale <- lapply(rlist, raster) # M.C. tutti i file sono inseriti in una unica lista
-
+listafinale   # M.C. visualizzo 13 elementi in lista con le singole bande
+      
 # M.C. ora si può fare un plot con tutti i par dell'altro giorno
 # M.C. tutti i file (bande) li compattiamo in una singola immagine attravero il comando "stack()"
 EN <- stack(listafinale) # M.C. EN è il nome
@@ -1067,7 +1075,7 @@ rlist <- list.files(pattern=".png")
 # M.C. applichiamo alla lista "rlist" la funzione "raster".
 listafinale <- lapply(rlist, raster)
 # M.C. ora creo un pacchetto con la lista di file.
-# il pacchetto lo chiamo EN
+# M.C. il pacchetto lo chiamo EN
 EN <- stack(listafinale)
 EN # M.C. mostra cosa c'è dentro. Dimensione, Nomi, Classe ecc
 # M.C. abbiamo preso i singoli file (13 in totale)
@@ -1091,7 +1099,7 @@ plot(EN, col=cl)
 # M.C. simile al comando par. ma è più semplice creare uno stack di dati e plottarli come sopra.
 
 
-# misuriamo come è variato il NO2 nel tempo
+# M.C. misuriamo come è variato il NO2 nel tempo
 # M.C. utilizzo di un BOXPLOT
 boxplot(EN)   # M.C. è posizionato verticalmente
 boxplot(EN, horizontal=T) # M.C. messo orizzontalmente
@@ -1106,6 +1114,7 @@ boxplot(EN, horizontal=T,outline=F,axes=T) # M.C. probabile non campi perche com
 #####################################
 #####################################
 # 9. R code snow
+      
 # M.C. prima cosa fare setwd
 setwd("C:/lab/")
 install.packages("ncdf4") # M.C. per caricare immagini da Copernicus
