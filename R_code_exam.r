@@ -12,6 +12,7 @@
 ### 9. R code snow
 ### 10. R code patches
 ### 11. R code crop
+### 12. Species Distribution Modelling
 ### Copernicus data: https://land.copernicus.vgt.vito.be/PDF/portal/Application.html
 
 ##################################### 1.
@@ -1383,6 +1384,91 @@ boxplot(snow.multitemp.italy, horizontal=T,outline=F)
 # M.C. funzione prediction funziona per qualsiasi dato
 # M.C. la normalizzazione significa riportare i dati da 0-255 (in questo caso)
   # M.C. contattare in caso di problemi
+      
+      
+################################################ 12.
+
+      # Species Distrbutio Modelling
+      
+      # installare il paccehtto "sdm"
+      install.packages("sdm")
+      library(sdm)
+      # M.C. pacchetto "rgdal" permette di gestire dati raster e vettoriali
+      library(raster)
+      library(rgdal)
+      
+      # carichiamo il file presente nel pacchetto "sdm"
+      # file "shp" hanno coordinate X,Y quindi sono dei punti
+      file <- system.file("external/species.shp", package="sdm") 
+      # abbiamo importato il file
+      # dobbiamo ancora caricare la parte grafica
+      species <- shapefile(file) # funzione della libreria "rgdal"
+      species # per vedere cosa contiene
+      # Occurrence  indica la presenza/assenza della specie 
+      # per vedere la colonna: species$Occurrence 
+      # valori numerici 0-1.
+      # 1 indica la presenza della specie in esame, 0 manca
+      plot(species) # vediamo in punti a terra dove presente questa specie
+      
+      
+      plot(species[species$Occurrence == 1,],col='blue',pch=16)
+      # == è una condizione. "se è uguale a 1..facciamo qualcosa"
+      # point characters R packages per sapere il significato del n16
+      # aggiunge i punti alle occorenze=1 (specie presente)
+      points(species[species$Occurrence == 0,],col='red',pch=16)
+      # in questo caso occorenze=0 (specie assente)
+      
+      # prendiamo delle variabili ambientali disponibili
+      # le variabili si trovano nel file "external" del pacchetto "sdm"
+      path <- system.file("external", package="sdm") 
+# ci sono diversi file, ne facciamo una lista con "list.files"
+      # "asc" indica che tipo di file è (es. TIF)
+      lst <- list.files(path=path,pattern='asc$',full.names = T) #
+ # serve per prevedere la distribuzione nello spazio in base alle variabili ambientali
+      lst # vediamo i file interni, cioè quali sono le variabili:
+      # quota (elevation)
+      # precipitazione (quanto piove)
+      # temperatura
+      # vegetazione (quanta copertura vegetale)
+      # facciamo uno stack per metterli tutti assieme
+      preds <- stack(lst)
+      cl <- colorRampPalette(c('blue','orange','red','yellow')) (100)
+ plot(preds, col=cl)
+      # facciamo i plot di una sola variabile a cui associamo i punti di presenza della specie
+      plot(preds$elevation, col=cl)
+      points(species[species$Occurrence == 1,], pch=16)
+ # mostra i punti in cui è presente, si vede che si trova in "basso". Non è presente in montagna
+      # la specie sta in una bassa elevation (bassa quota)
+      # facciamo per temperatura
+      plot(preds$temperature, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+      # piacciono le temperature medio-alte
+      # per precipitazioni
+      plot(preds$precipitation, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+      # situazione intermedia
+# per vegetazione
+      plot(preds$vegetation, col=cl)
+points(species[species$Occurrence == 1,], pch=16)
+      # ama una situazione ombreggiata, evita il "sole diretto"
+      # cioè zone rosso-gialle (alta presenza di vegetazione)
+      # sappiamo quindi che:
+        # bassa quota
+        # temperature medio-alte
+        # precipitaioni normali
+        # buona copertura
+      
+      # ora facciamo un modello lineare generalizzato
+      d <- sdmData(train=species, preditors=preds)
+      # train= tutti i dati raccolti a terra, sia presenze che assenze
+      # predictors= le variabili
+      
+      
+      
+      
+      
+      
+      
       
       
       
