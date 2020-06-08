@@ -1462,11 +1462,17 @@ points(species[species$Occurrence == 1,], pch=16)
       d <- sdmData(train=species, preditors=preds)
       # train= tutti i dati raccolti a terra, sia presenze che assenze
       # predictors= le variabili
+      m1 <- sdm(Occurrence ~ elevation + precipitation + temperature + vegetation, data=d, methods='glm')
+      # facciamo la mappa di previsione
+      p1 <- predict(m1, newdata=preds)
+      plot(p1, col=cl)
+points(species[species$Occurrence == 1,], pch=16) # vediamo i punti in cui è presente la specie
+      # la mappa che prevede la presenza della specie in base alle variabili
+      # zone gialle e rosse = zone in cui le variabili sono favorevoli alla specie
       
       
-      
-      
-      
+      #####################
+      # EXAM PROGECT
       
       
       
