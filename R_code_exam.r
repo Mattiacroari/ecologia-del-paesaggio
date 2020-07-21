@@ -1,4 +1,3 @@
-# R_code_exam.r
 
 # inserire i singoli script
 ### 1. R code first
@@ -15,6 +14,9 @@
 ### 12. Species Distribution Modelling
 ### Copernicus data: https://land.copernicus.vgt.vito.be/PDF/portal/Application.html
 
+### 13. R_code_exam.r
+
+
 ##################################### 1.
 #####################################
 #####################################
@@ -22,7 +24,7 @@
 
 install.packages("sp")
 
-# richiamo il pacchetto 
+# M.C richiamo il pacchetto 
 
 library(sp)
 
@@ -33,7 +35,7 @@ data(meuse)
 meuse 
 # M.C. visualizzo data set solo nelle prime righe
 head(meuse)
-# names = nome delle variabili
+# M.C names = nome delle variabili
 names(meuse)
 
 # M.C. summery= si puo fare un abstact delle info del dataset e delle funzioni che contiene
@@ -60,9 +62,9 @@ pairs(meuse[,3:6],
       main = "This is a nice pairs plot in R")             # M.C. Add a main title
       
       
-# AGGIUNGO ELEVATION (che è la 7ima variabile)
+# M.C AGGIUNGO ELEVATION (che è la 7ima variabile)
 pairs(meuse[,3:7],
-# il resto poi tutto uguale
+# M.C il resto poi tutto uguale
 
 
 # FUNZIONI PANNEL
@@ -128,7 +130,7 @@ plot(cadmium, copper, pch=17, col="green", main="primo plot", xlab="cadmio", yla
 
 install.packages("sp")
 
-# richiamo il pacchetto sp 
+# M.C richiamo il pacchetto sp 
 library(sp)
 
 # M.C. richiamo i dati "meuse"
@@ -168,7 +170,7 @@ par(mfrow=c(2,1))
 plot(copper,zinc,col="green",pch=17,cex=2)
 plot(cadmium,lead,col="red",pch=19,cex=2)
 
-# multiframe automatico
+# M.C multiframe automatico
 install.packages("GGalli")
 
 # M.C. prendo il dataset Meuse e lo mando nella funzione scaricata "ggpairs"
@@ -202,14 +204,14 @@ spplot(meuse,"zinc")
 #####################################
 # R code spatial2
       
-# libreria sp
+# M.C libreria sp
 library(sp)
 
-# dati da usare
+# M.C dati da usare
 data(meuse)
 head(meuse)       # M.C. controlla cosa c'è dentro al dataset
 
-#coordinate del dataset (dataframes in R)
+# M.C coordinate del dataset (dataframes in R)
 coordinates(meuse)=~x+y
 
 # M.C. spplot dei dati di zinco, tabella della distribuzione 
@@ -228,17 +230,17 @@ bubble(meuse,"zinc")
 bubble(meuse,"copper",col="red")
     # M.C. il grafico del rame ha dei valori piuttosto alti nella parte vicino al fume e piu bassi allontanadosi dal fiume 
     # M.C. il fiume è molto inquinato 
-# foraminiferi (Sofia), carbon capture (Marco)
+# M.C foraminiferi (Sofia), carbon capture (Marco)
 # array             
 foram <- c(10, 20, 35, 55, 67, 80)         # M.C. array o vettore--- per inserire dataset in R, si è creato un oggetto
 carbon <- c(5, 15, 30, 70, 85, 99)         # M.C. significa che la serie di numeri si chiamano carbon e foram
 plot(foram, carbon,col="green", cex=2, pch=11)
 
-# Dati dall'esterno (es. tabella su Covid-19)
-# cartella da creare su Windows: C:/lab     specifica il percorso 
-# Windows:   setwd("C:/lab")
+# M.C Dati dall'esterno (es. tabella su Covid-19)
+# M.C cartella da creare su Windows: C:/lab     specifica il percorso 
+# M.C Windows:   setwd("C:/lab")
 
-# funzione per leggere una tabella, nominata covid
+# M.C funzione per leggere una tabella, nominata covid
 covid <- read.table("covid_agg.csv",head=TRUE)
 
 
@@ -1470,11 +1472,395 @@ points(species[species$Occurrence == 1,], pch=16) # M.C. vediamo i punti in cui 
 # M.C. zone gialle e rosse = zone in cui le variabili sono favorevoli alla specie
       
       
-      #####################
-      # EXAM PROGECT
       
       
       
+##################################
+# 13. EXAM PROGECT
       
       
-      
+ ######### ESAME DI ECOLOGIA DEL PAESAGGIO, 2019/2020                           MATTIA CROARI
+
+# dati presi dal sito di EARTHSTAT
+# dati rappresentanti la resa media in tonnellate per ettaro di grano durante il periodo che va dal 1995 al 2005 
+
+
+
+# 1. FUNZIONE DI CARICAMENTO IMMAGINI RASTER CON LAPPLY E STACK 
+
+# 2. FUNZIONE PER CARICARE LE COASTLINES
+
+# 3. FUNZIONE RASTER : CARICO LE IMMAGINI SINGOLARMENTE
+
+# 4. FUNZIONE PER UNIRE LE COASTLINES ALLE IMMAGINI
+
+# 5. FUNZIONE GGPLOT2 : GRAFICO COLONNE (PIXELS E TONNELLATE PER ETTARO)  
+
+# 6. FUNZIONE BOXPLOT   
+
+# 7. FUNZIONE DIFFERENZA      
+
+# 8. FUNZIONE CROP     
+
+# 9. FUNZIONE DIFFERENZA CON I CROP DELL AUSTRALIA   
+
+# 10. FUNZIONE GGPLOT GRAFICO COLONNE DELL' AUSTRALIA(1995-2005)  
+
+
+
+
+
+# pacchetti necessari per procedere
+
+
+library(sp)
+
+install.packages("raster") 
+library(raster)
+
+install.packages("rgdal")          
+library(rgdal)
+
+install.packages("gglpot2")
+library(ggplot2)
+
+install.packages("gridExtra")
+library(gridExtra)
+
+install.packages("dismo")
+library(dismo)
+                       
+
+  
+
+
+#### 1. FUNZIONE DI CARICAMENTO IMMAGINI RASTER CON LAPPLY E STACK
+
+library(sp)
+install.packages("raster") 
+library(raster)
+
+setwd("C:/esame")
+rlist <- list.files(pattern=".tif", full.names=T)
+list_rast <- lapply(rlist, raster)
+wheat_yield.multitemp <- stack(list_rast)
+plot(wheat_yield.multitemp, zlim=c(0,7))
+
+# imposto una color ramp palette e do il limite di valori da 0 a 7
+
+cl <- colorRampPalette(c('aquamarine','darkolivegreen1','green2','green4'))(100)
+plot(wheat_yield.multitemp,col=cl,zlim=c(0,7))
+
+# il problema è che le mappe non hanno le coastlines 
+# aggiungo le coastlines alle mappe
+
+
+
+
+
+
+#### 2. FUNZIONE PER CARICARE LE COASTLINES
+
+
+# imposto la work direct. sulla cartella con lo shape file
+install.packages("rgdal")          
+library(rgdal)
+
+setwd("C:/esame/coastline")
+coastline <- readOGR("ne_10m_coastline.shp")
+
+# ri imposto la work direct. sulla cartella "esame"
+
+setwd("C:/esame")
+
+
+
+
+
+#### 3. FUNZIONE RASTER : CARICO LE IMMAGINI SINGOLARMENTE                
+
+
+# questo perchè lo shape file non si attacca ad uno stack file ma solo alle immagini raster singole
+
+setwd("C:/esame")
+wheat_1995 <- raster("Wheat_1995_Yield.tif")
+wheat_2000 <- raster("Wheat_2000_Yield.tif")
+wheat_2005 <- raster("Wheat_2005_Yield.tif")
+# cerco su internet tutto l'arrange dei colori di R e cerco i colori giusti 
+cl <- colorRampPalette(c('aquamarine','darkolivegreen1','green2','green4'))(100)
+
+# plotto le immagini
+plot(wheat_1995,col=cl) # mettere zlim e nome grafico
+# cambio la zlim per avere le aree meglio rappresentate e aggiungo il titolo
+plot(wheat_1995,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 1995")
+
+# plotto le immagini, cambio la zlim per avere le aree meglio rappresentate e aggiungo il titolo
+par(mfrow=c(2,2))
+# le plotto tutte con lo stesso colore, stesso zlim e col titolo
+plot(wheat_1995,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 1995")
+plot(wheat_2000,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 2000")
+plot(wheat_2005,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 2005")
+# le mappe pero non hanno le coastlines, le aggiungo successivamente
+
+dev.off()
+
+
+
+#### 4. FUNZIONE PER UNIRE LE COASTLINES
+
+
+cl <- colorRampPalette(c('aquamarine','darkolivegreen1','green2','green4'))(100)
+plot(wheat_1995,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 1995")
+
+plot(coastline,add=T)   # aggiungo le coastlines all'immagine raster e lo posso fare perche sono entrambe WGS84
+
+# cambio pero la larghezza delle linee delle coste per farle piu sottili con "lwd"
+
+plot(coastline,lwd=0.3)
+
+plot(wheat_1995,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 1995")
+plot(coastline,lwd=0.3,add=T)
+
+
+# le coastlines e le immagini tif pero hanno leggermente degli extent diversi per cui le allineo
+
+coastlines  # extension : -180, 180, -85.22194, 83.6341  (xmin, xmax, ymin, ymax)
+wheat_1995    # extension : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
+
+# creo una nuova extension da applicare a tutte le immagini raster
+
+extension <- c(-180, 180, -85.22194, 83.6341)
+wheat_1995 <- crop(wheat_1995, extension) # mantengo i nomi originali ma li cambio l'estensione
+wheat_2000 <- crop(wheat_2000, extension)
+wheat_2005 <- crop(wheat_2005, extension)
+
+par(mfrow=c(2,2))
+
+plot(wheat_1995,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 1995")  # riplotto tutto insieme aggiungendo le coastlines
+plot(coastline,lwd=0.3,add=T)
+plot(wheat_2000,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 2000")
+plot(coastline,lwd=0.3,add=T)
+plot(wheat_2005,col=cl,zlim=c(0,7),main="GLOBAL WHEAT YIELD 2005")
+plot(coastline,lwd=0.3,add=T)
+
+
+
+
+
+
+#### 5. FUNZIONE GGPLOT2 : GRAFICO COLONNE (PIXELS E TONNELLATE PER ETTARO)  
+
+
+install.packages("gglpot2")
+library(ggplot2)
+
+# con la funzione "freq" creo un frequency table dove mi fa il conto di tutti i pixel con uguali valori
+freq(wheat_1995)
+# salvo la tabella come insieme di dati
+fr1995 <- freq(wheat_1995) # guardo la tabella e vedo i valori come sono organizzati
+View(fr1995)
+
+# mi creo una tabella con i valori che riporto anche sul grafico da 0 a 7 (dove ho la maggior parte dei dati)
+
+tons_per_hectare <- c(1,2,3,4,5,6,7)
+n.pixels <- c(21476,444102,426895,161237,82054,48303,28284)
+# creo la tabella
+tons_per_hectare_1995 <- data.frame(tons_per_hectare,n.pixels)
+View(tons_per_hectare_1995)
+# creo le basi per il grafico del 1995
+ggplot1995 <- ggplot(tons_per_hectare_1995, aes(x=tons_per_hectare,y=n.pixels)) + geom_bar(stat="identity",fill="white")
+plot(ggplot1995)
+
+# cambio colore delle colonne in giallo,aggiungo i limiti sulla y, e il titolo e cambio anche i nomi della x e della y
+
+ggplot1995 <- ggplot(tons_per_hectare_1995, aes(x=tons_per_hectare,y=n.pixels)) + 
+geom_bar(stat="identity", fill="forestgreen") +
+ylim(0, 500000) +
+labs(title="TONS PER HECTARE 1995",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
+plot(ggplot1995)
+
+# faccio la stessa cosa ma per il 2005
+
+# con la funzione "freq" creo un frequency table dove mi fa il conto di tutti i pixel con uguali valori
+freq(wheat_2005)
+fr2005 <- freq(wheat_2005) # guardo la tabella e vedo i valori come sono organizzati
+View(fr2005)
+
+tons_per_hectare2 <- c(1,2,3,4,5,6,7)
+n.pixels2 <- c(9381,393859,391869,209141,93095,54344,41145)
+tons_per_hectare_2005 <- data.frame(tons_per_hectare2,n.pixels2)
+View(tons_per_hectare_2005)
+
+ggplot2005 <- ggplot(tons_per_hectare_2005, aes(x=tons_per_hectare2,y=n.pixels2)) + 
+geom_bar(stat="identity",fill="forestgreen") +
+ylim(0, 500000) +
+labs(title="TONS PER HECTARE 2005",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
+plot(ggplot2005)
+
+
+# Metto i due grafici appena ottenuti sulla stessa riga 
+
+install.packages("gridExtra")
+library(gridExtra)
+
+# grid.arrange(plot1,plot2,nrow=1) = due grafici nella stessa finestra 
+
+grid.arrange(ggplot1995,ggplot2005,nrow=1)
+
+
+## Qua vedo come in 10 anni sono aumentate/diminuite le tonnellate per ettaro
+# gli ettari dove si produce solo 1 tonnellata sono diminuiti e dove se ne produono di piu di tonnellate sono aumentati
+
+
+
+
+
+#### 6. FUNZIONE BOXPLOT 
+
+boxplot(wheat_1995, horizontal=T,outline=F,axes=T)
+boxplot(wheat_2005, horizontal=T,outline=F,axes=T)
+
+# con main aggiungo il titolo e le metto con una par una sotto all'altra
+
+par(mfrow=c(1,2))  # se immagine troppo grande fare dev.off()
+boxplot(wheat_1995, horizontal=T,outline=F,axes=T,main="WHEAT YIELD 1995")
+boxplot(wheat_2005, horizontal=T,outline=F,axes=T,main="WHEAT YIELD 2005")
+
+
+
+
+
+#### 7. FUNZIONE DIFFERENZA   
+
+
+diff <- wheat_2005-wheat_1995
+
+# aggiungo al plot dell'immagine la color palette, il titolo e il limite dei valori con zlim
+# aggiungo anche le coastlines
+
+cl1 <- colorRampPalette(c('red','yellow','green'))(100)
+plot(diff,col=cl1,zlim=c(-2,3),main="GLOBAL WHEAT YIELD DIFFERENCE FROM 1995 TO 2005")
+plot(coastline,lwd=0.3,add=T)
+
+
+# extension diverse
+extension <- c(-180, 180, -85.22194, 83.6341)
+diff <- crop(diff, extension)  # non funziona....da riprovare
+
+
+
+
+##### 8. FUNZIONE CROP      
+                           
+
+###  funzione CROP della zona dell'AUSTRALIA
+
+
+extension <- c(110, 160, -50, 0)   # zona AUSTRALIA
+wheat_1995_AU <- crop(wheat_1995, extension)
+wheat_2000_AU <- crop(wheat_2000, extension)
+wheat_2005_AU <- crop(wheat_2005, extension)
+
+
+# le plotto tutte insieme e aggiungo la color ramp, il limite zlim e il titolo
+cl <- colorRampPalette(c('aquamarine','darkolivegreen1','green2','green4'))(100)
+par(mfrow=c(2,2))  
+plot(wheat_1995_AU,col=cl,zlim=c(0,7),main="AUSTRALIA WHEAT YIELD 1995")
+plot(coastline,lwd=0.3,add=T) 
+plot(wheat_2000_AU,col=cl,zlim=c(0,7),main="AUSTRALIA WHEAT YIELD 2000")
+plot(coastline,lwd=0.3,add=T) 
+plot(wheat_2005_AU,col=cl,zlim=c(0,7),main="AUSTRALIA WHEAT YIELD 2005")
+plot(coastline,lwd=0.3,add=T)
+
+# metto le mappe del 1995 e del 2005 una di finaco all'altra e aggiungo il titolo al grafico
+par(mfrow=c(1,2))                       
+plot(wheat_1995_AU,col=cl,zlim=c(0,7),main="AUSTRALIA WHEAT YIELD 1995")
+plot(coastline,lwd=0.3,add=T)
+
+plot(wheat_2005_AU,col=cl,zlim=c(0,7),main="AUSTRALIA WHEAT YIELD 2005")
+plot(coastline,lwd=0.3,add=T)
+
+
+
+
+###### 9. FUNZIONE DIFFERENZA CON I CROP DELL' AUSTRALIA
+
+
+# posso fare la differenza dei due crop in AUSTRALIA
+
+diff_wheat_AU <- wheat_2005_AU - wheat_1995_AU
+cl1 <- colorRampPalette(c('red','yellow','green'))(100)
+
+# aggiungo sempre lo stesso zlim e il titolo del grafico
+plot(diff_wheat_AU,col=cl1,zlim=c(-2,3),main="AUSTRALIA WHEAT YIELD DIFFERENCE FROM 1995 TO 2005")
+plot(coastline,lwd=0.3,add=T)
+
+
+
+
+#### 10. FUNZIONE GGPLOT GRAFICO COLONNE DELL' AUSTRALIA (1995-2005)
+
+# con la funzione "freq" creo un frequency table dove mi fa il conto di tutti i pixel con uguali valori
+freq.AU.1995 <- freq(wheat_1995_AU)
+freq.AU.2005 <- freq(wheat_2005_AU) # guardo le tabella e vedo i valori come sono organizzati
+ 
+View(freq.AU.1995)
+View(freq.AU.2005)
+
+
+# mi creo una tabella con i valori che riporto anche sul grafico da 0 a 7 (dove ho la maggior parte dei dati)
+# tabella dei valori per il raster AUSTRALIA 1995
+
+
+tons_per_hectare_AU1995 <- c(1,2,3,4,5)
+n.pixels_AU1995 <- c(15570,33309,7662,1616,337)
+
+# creo la tabella
+tons_per_hectare_1995AU <- data.frame(tons_per_hectare_AU1995,n.pixels_AU1995)
+View(tons_per_hectare_1995AU)
+# creo le basi per il grafico del 1995 dell' Australia, limiti sulla y e il titolo
+ggplot1995AU <- ggplot(tons_per_hectare_1995AU, aes(x=tons_per_hectare_AU1995,y=n.pixels_AU1995)) + geom_bar(stat="identity",fill="forestgreen") + ylim(0, 40000) + labs(title="TONS/HECTARE 1995 AUSTRALIA",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
+plot(ggplot1995AU)
+
+
+
+# faccio la stessa cosa ma per il 2005
+
+View(freq.AU.2005)
+
+tons_per_hectare_AU2005 <- c(1,2,3,4,5)
+n.pixels_AU2005 <- c(17026,37676,6997,366,635)
+
+# creo la tabella
+tons_per_hectare_2005AU <- data.frame(tons_per_hectare_AU2005,n.pixels_AU2005)
+View(tons_per_hectare_2005AU)
+# creo le basi per il grafico del 2005 del Australia, limiti sulla y, titolo 
+ggplot2005AU <- ggplot(tons_per_hectare_2005AU, aes(x=tons_per_hectare_AU2005,y=n.pixels_AU2005)) + geom_bar(stat="identity",fill="forestgreen") + ylim(0, 40000) + labs(title="TONS/HECTARE 2005 AUSTRALIA",x = "TONS/HECTARE",y="N. OF PIXELS (SINGOL CELL AREA 10 km2)")
+plot(ggplot2005AU)
+
+
+# Metto i due grafici appena ottenuti sulla stessa riga 
+
+install.packages("gridExtra")
+library("gridExtra")
+
+# grid.arrange(plot1,plot2,nrow=1) = due grafici nella stessa finestra 
+
+grid.arrange(ggplot1995AU,ggplot2005AU,nrow=1)
+
+
+
+#### 11. FUNZIONE BOXPLOT 
+
+boxplot(wheat_1995_AU, horizontal=T,outline=F,axes=T)
+boxplot(wheat_2005_AU, horizontal=T,outline=F,axes=T)
+
+# con main aggiungo il titolo e le metto con una par una sotto all'altra
+
+par(mfrow=c(1,2))  # se immagine troppo grande fare dev.off()
+boxplot(wheat_1995_AU, horizontal=T,outline=F,axes=T,main="WHEAT YIELD 1995 AUSTRALIA")
+boxplot(wheat_2005_AU, horizontal=T,outline=F,axes=T,main="WHEAT YIELD 2005 AUSTRALIA")
+
+
+
+ 
